@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SensirionI2CScd4x	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+startPeriodicMeasurement	KEYWORD2
+
+readMeasurement	KEYWORD2
+
+stopPeriodicMeasurement	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+scd4x	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
