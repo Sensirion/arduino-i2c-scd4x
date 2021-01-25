@@ -49,8 +49,22 @@ void setup() {
 
     scd4x.begin(Wire);
 
-    // Start Measurement
+    uint16_t serial0;
+    uint16_t serial1;
+    uint16_t serial2;
+    error = scd4x.getSerialNumber(serial0, serial1, serial2);
+    if (error) {
+        Serial.print("Error trying to execute getSerialNumber(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    } else {
+        Serial.print("Serial: 0x");
+        Serial.print(serial0, HEX);
+        Serial.print(serial1, HEX);
+        Serial.println(serial2, HEX);
+    }
 
+    // Start Measurement
     error = scd4x.startPeriodicMeasurement();
     if (error) {
         Serial.print("Error trying to execute startPeriodicMeasurement(): ");
@@ -62,8 +76,8 @@ void setup() {
 void loop() {
     uint16_t error;
     char errorMessage[256];
-    // Read Measurement
 
+    // Read Measurement
     uint16_t co2;
     uint16_t temperature;
     uint16_t humidity;
