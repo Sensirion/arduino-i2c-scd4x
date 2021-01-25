@@ -77,6 +77,8 @@ void loop() {
     uint16_t error;
     char errorMessage[256];
 
+    delay(5000);
+
     // Read Measurement
     uint16_t co2;
     uint16_t temperature;
@@ -96,5 +98,4 @@ void loop() {
         Serial.print("Humidity:");
         Serial.println(humidity * 100.0 / 65536.0);
     }
-    delay(5000);
 }
