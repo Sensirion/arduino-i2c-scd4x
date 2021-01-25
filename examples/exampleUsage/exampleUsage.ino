@@ -88,6 +88,9 @@ void loop() {
         Serial.print("Error trying to execute readMeasurement(): ");
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
+    } else if (co2 == 0) {
+        Serial.println("Invalid sample detected. Could be caused by strong"
+                       " mechanical vibrations");
     } else {
         Serial.print("Co2:");
         Serial.print(co2);
