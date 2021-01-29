@@ -21,7 +21,7 @@ Note: Installation via the Arduino Library Manager is coming soon.
 
 # Dependencies
 
-* [Sensirion Core Arduino Library](https://github.com/Sensirion/Sensirion_Core_Arduino_Library)
+* [Sensirion Core](https://github.com/Sensirion/arduino-core)
 
 
 # Quick Start
