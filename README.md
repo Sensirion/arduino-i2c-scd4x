@@ -26,7 +26,7 @@ Note: Installation via the Arduino Library Manager is coming soon.
 
 # Quick Start
 
-1. Connect the SCDd4x sensor to your Arduino board's standard I2C bus. Check
+1. Connect the SCD4x sensor to your Arduino board's standard I2C bus. Check
    the pinout of your Arduino board to find the correct pins. The pinout of the
    SCD4x sensor board can be found [here](https://sensirion.com/my-scd-ek)
 
