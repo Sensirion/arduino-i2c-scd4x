@@ -64,6 +64,14 @@ void setup() {
 
     scd4x.begin(Wire);
 
+    // stop potentially previously started measurement
+    error = scd4x.stopPeriodicMeasurement();
+    if (error) {
+        Serial.print("Error trying to execute stopPeriodicMeasurement(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    }
+
     uint16_t serial0;
     uint16_t serial1;
     uint16_t serial2;
