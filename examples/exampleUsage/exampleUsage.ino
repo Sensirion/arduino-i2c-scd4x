@@ -89,8 +89,7 @@ void loop() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else if (co2 == 0) {
-        Serial.println("Invalid sample detected. Could be caused by strong"
-                       " mechanical vibrations");
+        Serial.println("Invalid sample detected, skipping.");
     } else {
         Serial.print("Co2:");
         Serial.print(co2);
