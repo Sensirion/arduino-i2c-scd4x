@@ -35,6 +35,21 @@
 
 SensirionI2CScd4x scd4x;
 
+void printUint16Hex(uint16_t value) {
+    Serial.print(value < 4096 ? "0" : "");
+    Serial.print(value < 256 ? "0" : "");
+    Serial.print(value < 16 ? "0" : "");
+    Serial.print(value, HEX);
+}
+
+void printSerialNumber(uint16_t serial0, uint16_t serial1, uint16_t serial2) {
+    Serial.print("Serial: 0x");
+    printUint16Hex(serial0);
+    printUint16Hex(serial1);
+    printUint16Hex(serial2);
+    Serial.println();
+}
+
 void setup() {
 
     Serial.begin(115200);
@@ -49,6 +64,14 @@ void setup() {
 
     scd4x.begin(Wire);
 
+    // stop potentially previously started measurement
+    error = scd4x.stopPeriodicMeasurement();
+    if (error) {
+        Serial.print("Error trying to execute stopPeriodicMeasurement(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    }
+
     uint16_t serial0;
     uint16_t serial1;
     uint16_t serial2;
@@ -58,10 +81,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("Serial: 0x");
-        Serial.print(serial0, HEX);
-        Serial.print(serial1, HEX);
-        Serial.println(serial2, HEX);
+        printSerialNumber(serial0, serial1, serial2);
     }
 
     // Start Measurement
@@ -89,8 +109,7 @@ void loop() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else if (co2 == 0) {
-        Serial.println("Invalid sample detected. Could be caused by strong"
-                       " mechanical vibrations");
+        Serial.println("Invalid sample detected, skipping.");
     } else {
         Serial.print("Co2:");
         Serial.print(co2);
