@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  * Correctly print serial number in the example
  * Stop potentially running measurement in example
 
-## [0.1.0] - 2021-01-28
+## [0.1.0] - 2021-02-05
 
 Initial release
 
