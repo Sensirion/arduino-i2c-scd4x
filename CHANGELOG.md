@@ -7,16 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2021-02-10
 
-Changed
-~~~~~~~
+### Changed
 
 * Updated Sensirion Core library version from 0.4.0 to 0.4.2. This includes the
   renaming of the library header file from `SensirionCoreArduinoLibrary.h` to
   `SensirionCore.h`.
 * Define `SCD4X_I2C_ADDRESS` as hex instead of dec (unchanged value).
 
-Added
-~~~~~
+### Added
 
 * Added warning about limited EEPROM write cycles.
 
