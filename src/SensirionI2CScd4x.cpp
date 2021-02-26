@@ -513,8 +513,9 @@ uint16_t SensirionI2CScd4x::wakeUp() {
         return error;
     }
 
-    error = SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS, txFrame,
-                                                 *_i2cBus);
+    // Sensor does not acknowledge the wake-up call, error is ignored
+    static_cast<void>(SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS,
+                                                           txFrame, *_i2cBus));
     delay(20);
-    return error;
+    return NoError;
 }
