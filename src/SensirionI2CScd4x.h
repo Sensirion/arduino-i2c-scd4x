@@ -66,12 +66,12 @@ class SensirionI2CScd4x {
     uint16_t startPeriodicMeasurement(void);
 
     /**
-     * readMeasurement() - read sensor output. The measurement data can only be
-     * read out once per signal update interval as the buffer is emptied upon
-     * read-out. If no data is available in the buffer, the sensor returns a
-     * NACK. To avoid a NACK response the get_data_ready_status can be issued to
-     * check data status. The I2C master can abort the read transfer with a NACK
-     * followed by a STOP condition after any data byte if the user is not
+     * readMeasurementTicks() - read sensor output. The measurement data can
+     * only be read out once per signal update interval as the buffer is emptied
+     * upon read-out. If no data is available in the buffer, the sensor returns
+     * a NACK. To avoid a NACK response the get_data_ready_status can be issued
+     * to check data status. The I2C master can abort the read transfer with a
+     * NACK followed by a STOP condition after any data byte if the user is not
      * interested in subsequent data.
      *
      * @note This command is only available in measurement mode. The firmware
@@ -85,8 +85,31 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t readMeasurement(uint16_t& co2, uint16_t& temperature,
-                             uint16_t& humidity);
+    uint16_t readMeasurementTicks(uint16_t& co2, uint16_t& temperature,
+                                  uint16_t& humidity);
+
+    /**
+     * readMeasurement() - read sensor output. The measurement data can
+     * only be read out once per signal update interval as the buffer is emptied
+     * upon read-out. If no data is available in the buffer, the sensor returns
+     * a NACK. To avoid a NACK response the get_data_ready_status can be issued
+     * to check data status. The I2C master can abort the read transfer with a
+     * NACK followed by a STOP condition after any data byte if the user is not
+     * interested in subsequent data.
+     *
+     * @note This command is only available in measurement mode. The firmware
+     * updates the measurement values depending on the measurement mode.
+     *
+     * @param co2 CO₂ concentration in ppm
+     *
+     * @param temperature Temperature in °C
+     *
+     * @param humidity Relative humidity in %RH
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t readMeasurement(uint16_t& co2, float& temperature,
+                             float& humidity);
 
     /**
      * stopPeriodicMeasurement() - Stop periodic measurement and return to idle
@@ -99,9 +122,9 @@ class SensirionI2CScd4x {
     uint16_t stopPeriodicMeasurement(void);
 
     /**
-     * getTemperatureOffset() - The temperature offset represents the difference
-     * between the measured temperature by the SCD4x and the actual ambient
-     * temperature. Per default, the temperature offset is set to 4°C.
+     * getTemperatureOffsetTicks() - The temperature offset represents the
+     * difference between the measured temperature by the SCD4x and the actual
+     * ambient temperature. Per default, the temperature offset is set to 4°C.
      *
      * @note Only available in idle mode.
      *
@@ -110,10 +133,23 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getTemperatureOffset(uint16_t& tOffset);
+    uint16_t getTemperatureOffsetTicks(uint16_t& tOffset);
 
     /**
-     * setTemperatureOffset() - Setting the temperature offset of the SCD4x
+     * getTemperatureOffset() - The temperature offset represents the difference
+     * between the measured temperature by the SCD4x and the actual ambient
+     * temperature. Per default, the temperature offset is set to 4°C.
+     *
+     * @note Only available in idle mode.
+     *
+     * @param tOffset Temperature offset in °C
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t getTemperatureOffset(float& tOffset);
+
+    /**
+     * setTemperatureOffsetTicks() - Setting the temperature offset of the SCD4x
      * inside the customer device correctly allows the user to leverage the RH
      * and T output signal. Note that the temperature offset can depend on
      * various factors such as the SCD4x measurement mode, self-heating of close
@@ -128,7 +164,24 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setTemperatureOffset(uint16_t tOffset);
+    uint16_t setTemperatureOffsetTicks(uint16_t tOffset);
+
+    /**
+     * setTemperatureOffset() - Setting the temperature offset of the SCD4x
+     * inside the customer device correctly allows the user to leverage the RH
+     * and T output signal. Note that the temperature offset can depend on
+     * various factors such as the SCD4x measurement mode, self-heating of close
+     * components, the ambient temperature and air flow. Thus, the SCD4x
+     * temperature offset should be determined inside the customer device under
+     * its typical operation and in thermal equilibrium.
+     *
+     * @note Only available in idle mode.
+     *
+     * @param tOffset Temperature offset in °C
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t setTemperatureOffset(float tOffset);
 
     /**
      * getSensorAltitude() - Get configured sensor altitude in meters above sea

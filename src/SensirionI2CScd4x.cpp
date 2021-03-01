@@ -66,9 +66,9 @@ uint16_t SensirionI2CScd4x::startPeriodicMeasurement() {
     return error;
 }
 
-uint16_t SensirionI2CScd4x::readMeasurement(uint16_t& co2,
-                                            uint16_t& temperature,
-                                            uint16_t& humidity) {
+uint16_t SensirionI2CScd4x::readMeasurementTicks(uint16_t& co2,
+                                                 uint16_t& temperature,
+                                                 uint16_t& humidity) {
     uint16_t error;
     uint8_t buffer[9];
     SensirionI2CTxFrame txFrame(buffer, 9);
@@ -99,6 +99,22 @@ uint16_t SensirionI2CScd4x::readMeasurement(uint16_t& co2,
     return error;
 }
 
+uint16_t SensirionI2CScd4x::readMeasurement(uint16_t& co2, float& temperature,
+                                            float& humidity) {
+    uint16_t error;
+    uint16_t temperatureTicks;
+    uint16_t humidityTicks;
+
+    error = readMeasurementTicks(co2, temperatureTicks, humidityTicks);
+    if (error) {
+        return error;
+    }
+
+    temperature = static_cast<float>(temperatureTicks * 175.0 / 65536.0 - 45.0);
+    humidity = static_cast<float>(humidityTicks * 100.0 / 65536.0);
+    return NoError;
+}
+
 uint16_t SensirionI2CScd4x::stopPeriodicMeasurement() {
     uint16_t error;
     uint8_t buffer[2];
@@ -115,7 +131,7 @@ uint16_t SensirionI2CScd4x::stopPeriodicMeasurement() {
     return error;
 }
 
-uint16_t SensirionI2CScd4x::getTemperatureOffset(uint16_t& tOffset) {
+uint16_t SensirionI2CScd4x::getTemperatureOffsetTicks(uint16_t& tOffset) {
     uint16_t error;
     uint8_t buffer[3];
     SensirionI2CTxFrame txFrame(buffer, 3);
@@ -144,7 +160,20 @@ uint16_t SensirionI2CScd4x::getTemperatureOffset(uint16_t& tOffset) {
     return error;
 }
 
-uint16_t SensirionI2CScd4x::setTemperatureOffset(uint16_t tOffset) {
+uint16_t SensirionI2CScd4x::getTemperatureOffset(float& tOffset) {
+    uint16_t error;
+    uint16_t tOffsetTicks;
+
+    error = getTemperatureOffsetTicks(tOffsetTicks);
+    if (error) {
+        return error;
+    }
+
+    tOffset = static_cast<float>(tOffsetTicks * 175.0 / 65536.0);
+    return NoError;
+}
+
+uint16_t SensirionI2CScd4x::setTemperatureOffsetTicks(uint16_t tOffset) {
     uint16_t error;
     uint8_t buffer[5];
     SensirionI2CTxFrame txFrame(buffer, 5);
@@ -159,6 +188,12 @@ uint16_t SensirionI2CScd4x::setTemperatureOffset(uint16_t tOffset) {
                                                  *_i2cBus);
     delay(1);
     return error;
+}
+
+uint16_t SensirionI2CScd4x::setTemperatureOffset(float tOffset) {
+    uint16_t tOffsetTicks =
+        static_cast<uint16_t>(tOffset * 65536.0 / 175.0 + 0.5f);
+    return setTemperatureOffsetTicks(tOffsetTicks);
 }
 
 uint16_t SensirionI2CScd4x::getSensorAltitude(uint16_t& sensorAltitude) {
@@ -513,8 +548,9 @@ uint16_t SensirionI2CScd4x::wakeUp() {
         return error;
     }
 
-    error = SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS, txFrame,
-                                                 *_i2cBus);
+    // Sensor does not acknowledge the wake-up call, error is ignored
+    static_cast<void>(SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS,
+                                                           txFrame, *_i2cBus));
     delay(20);
-    return error;
+    return NoError;
 }

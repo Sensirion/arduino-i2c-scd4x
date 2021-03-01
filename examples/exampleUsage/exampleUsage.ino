@@ -91,6 +91,8 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     }
+
+    Serial.println("Waiting for first measurement... (5 sec)");
 }
 
 void loop() {
@@ -101,8 +103,8 @@ void loop() {
 
     // Read Measurement
     uint16_t co2;
-    uint16_t temperature;
-    uint16_t humidity;
+    float temperature;
+    float humidity;
     error = scd4x.readMeasurement(co2, temperature, humidity);
     if (error) {
         Serial.print("Error trying to execute readMeasurement(): ");
@@ -115,9 +117,9 @@ void loop() {
         Serial.print(co2);
         Serial.print("\t");
         Serial.print("Temperature:");
-        Serial.print(temperature * 175.0 / 65536.0 - 45.0);
+        Serial.print(temperature);
         Serial.print("\t");
         Serial.print("Humidity:");
-        Serial.println(humidity * 100.0 / 65536.0);
+        Serial.println(humidity);
     }
 }
