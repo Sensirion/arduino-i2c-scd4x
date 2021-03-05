@@ -2,7 +2,7 @@
 
 This is the Sensirion SCD4x library for Arduino using the I2C interface.
 
-[<center><img src="assets/SCD41_Development_Board.png" width="300px"></center>](https://sensirion.com/my-scd-ek)
+[<center><img src="images/SCD41_Development_Board.png" width="300px"></center>](https://sensirion.com/my-scd-ek)
 
 Click [here](https://sensirion.com/my-scd-ek) to learn more about the SCD4x
 sensor and the SCD41 Evaluation Kit Board.
