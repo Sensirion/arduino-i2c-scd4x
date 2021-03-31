@@ -79,9 +79,9 @@ class SensirionI2CScd4x {
      *
      * @param co2 CO₂ concentration in ppm
      *
-     * @param temperature Convert value to °C by: -45 °C + 175 °C * value/2^16
+     * @param temperature Convert value to °C by: value * 175 / 2^16 - 45
      *
-     * @param humidity Convert value to %RH by: 100%RH * value/2^16
+     * @param humidity Convert value to %RH by: 100 * value/2^16
      *
      * @return 0 on success, an error code otherwise
      */
