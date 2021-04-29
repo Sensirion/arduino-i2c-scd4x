@@ -445,7 +445,7 @@ uint16_t SensirionI2CScd4x::performSelfTest(uint16_t& sensorStatus) {
         return error;
     }
 
-    delay(5500);
+    delay(10000);
 
     SensirionI2CRxFrame rxFrame(buffer, 3);
     error = SensirionI2CCommunication::receiveFrame(SCD4X_I2C_ADDRESS, 3,
@@ -502,7 +502,7 @@ uint16_t SensirionI2CScd4x::measureSingleShot() {
 
     error = SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS, txFrame,
                                                  *_i2cBus);
-    delay(1350);
+    delay(5000);
     return error;
 }
 
