@@ -351,8 +351,9 @@ uint16_t SensirionI2CScd4x::startLowPowerPeriodicMeasurement() {
                                                 *_i2cBus);
 }
 
-uint16_t SensirionI2CScd4x::getDataReadyStatus(uint16_t& dataReady) {
+uint16_t SensirionI2CScd4x::getDataReadyFlag(bool& dataReady) {
     uint16_t error;
+    uint16_t localDataReady = 0;
     uint8_t buffer[3];
     SensirionI2CTxFrame txFrame(buffer, 3);
 
@@ -376,7 +377,8 @@ uint16_t SensirionI2CScd4x::getDataReadyStatus(uint16_t& dataReady) {
         return error;
     }
 
-    error |= rxFrame.getUInt16(dataReady);
+    error |= rxFrame.getUInt16(localDataReady);
+    dataReady = (localDataReady & 0x07FF) != 0;
     return error;
 }
 

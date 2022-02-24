@@ -99,12 +99,23 @@ void loop() {
     uint16_t error;
     char errorMessage[256];
 
-    delay(5000);
+    delay(100);
 
     // Read Measurement
     uint16_t co2 = 0;
     float temperature = 0.0f;
     float humidity = 0.0f;
+    bool isDataReady = false;
+    error = scd4x.getDataReadyFlag(isDataReady);
+    if (error) {
+        Serial.print("Error trying to execute readMeasurement(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+        return;
+    }
+    if (!isDataReady) {
+        return;
+    }
     error = scd4x.readMeasurement(co2, temperature, humidity);
     if (error) {
         Serial.print("Error trying to execute readMeasurement(): ");
