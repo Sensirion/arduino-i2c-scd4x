@@ -273,14 +273,14 @@ class SensirionI2CScd4x {
     uint16_t startLowPowerPeriodicMeasurement(void);
 
     /**
-     * getDataReadyStatus() - Check whether new measurement data is available
+     * getDataReadyFlag() - Check whether new measurement data is available
      * for read-out.
      *
-     * @param dataReady If last 11 bits are 0 data not ready, else data ready
+     * @param dataReadyFlag True if valid data is available, false otherwise.
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getDataReadyStatus(uint16_t& dataReady);
+    uint16_t getDataReadyFlag(bool& dataReadyFlag);
 
     /**
      * persistSettings() - Configuration settings such as the temperature
