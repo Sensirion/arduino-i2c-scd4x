@@ -110,8 +110,8 @@ uint16_t SensirionI2CScd4x::readMeasurement(uint16_t& co2, float& temperature,
         return error;
     }
 
-    temperature = static_cast<float>(temperatureTicks * 175.0 / 65536.0 - 45.0);
-    humidity = static_cast<float>(humidityTicks * 100.0 / 65536.0);
+    temperature = static_cast<float>(temperatureTicks * 175.0 / 65535.0 - 45.0);
+    humidity = static_cast<float>(humidityTicks * 100.0 / 65535.0);
     return NoError;
 }
 
