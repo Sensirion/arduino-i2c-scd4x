@@ -108,7 +108,7 @@ void loop() {
     bool isDataReady = false;
     error = scd4x.getDataReadyFlag(isDataReady);
     if (error) {
-        Serial.print("Error trying to execute readMeasurement(): ");
+        Serial.print("Error trying to execute getDataReadyFlag(): ");
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
         return;
