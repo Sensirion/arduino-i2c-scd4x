@@ -270,7 +270,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
+    uint16_t
+    getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
 
     /**
      * getAutomaticSelfCalibrationInitialPeriod - value in hours
@@ -279,7 +280,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+    uint16_t
+    getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
 
     /**
      * getAutomaticSelfCalibrationStandardPeriod - value in hours
@@ -288,7 +290,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
+    uint16_t
+    setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
 
     /**
      * setAutomaticSelfCalibrationInitialPeriod - value in hours
@@ -297,7 +300,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+    uint16_t
+    setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
 
     /**
      * setAutomaticSelfCalibrationStandardPeriod - value in hours

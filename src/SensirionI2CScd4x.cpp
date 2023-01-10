@@ -337,7 +337,8 @@ uint16_t SensirionI2CScd4x::setAutomaticSelfCalibration(uint16_t ascEnabled) {
     return error;
 }
 
-uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod) {
+uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationInitialPeriod(
+    uint16_t& ascInitialPeriod) {
     uint16_t error;
     uint8_t buffer[3];
     SensirionI2CTxFrame txFrame(buffer, 3);
@@ -366,8 +367,8 @@ uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationInitialPeriod(uint16_t& a
     return error;
 }
 
-
-uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod) {
+uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationStandardPeriod(
+    uint16_t& ascStandardPeriod) {
     uint16_t error;
     uint8_t buffer[3];
     SensirionI2CTxFrame txFrame(buffer, 3);
@@ -396,7 +397,8 @@ uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationStandardPeriod(uint16_t& 
     return error;
 }
 
-uint16_t SensirionI2CScd4x::setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod) {
+uint16_t SensirionI2CScd4x::setAutomaticSelfCalibrationInitialPeriod(
+    uint16_t& ascInitialPeriod) {
     uint16_t error;
     uint8_t buffer[5];
     SensirionI2CTxFrame txFrame(buffer, 5);
@@ -413,8 +415,8 @@ uint16_t SensirionI2CScd4x::setAutomaticSelfCalibrationInitialPeriod(uint16_t& a
     return error;
 }
 
-
-uint16_t SensirionI2CScd4x::setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod) {
+uint16_t SensirionI2CScd4x::setAutomaticSelfCalibrationStandardPeriod(
+    uint16_t& ascStandardPeriod) {
     uint16_t error;
     uint8_t buffer[5];
     SensirionI2CTxFrame txFrame(buffer, 5);
@@ -430,7 +432,6 @@ uint16_t SensirionI2CScd4x::setAutomaticSelfCalibrationStandardPeriod(uint16_t& 
     delay(1);
     return error;
 }
-
 
 uint16_t SensirionI2CScd4x::startLowPowerPeriodicMeasurement() {
     uint16_t error;
