@@ -263,17 +263,6 @@ class SensirionI2CScd4x {
     uint16_t setAutomaticSelfCalibration(uint16_t ascEnabled);
 
     /**
-     * startLowPowerPeriodicMeasurement() - Start low power periodic
-     * measurement, signal update interval is 30 seconds.
-     *
-     * @note This command is only available in idle mode.
-     *
-     * @return 0 on success, an error code otherwise
-     */
-    uint16_t
-    getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
-
-    /**
      * getAutomaticSelfCalibrationInitialPeriod - value in hours
      *
      * @param ascInitialPeriod number of hours before ASC is first triggered
@@ -281,7 +270,7 @@ class SensirionI2CScd4x {
      * @return 0 on success, an error code otherwise
      */
     uint16_t
-    getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+    getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
 
     /**
      * getAutomaticSelfCalibrationStandardPeriod - value in hours
@@ -291,7 +280,7 @@ class SensirionI2CScd4x {
      * @return 0 on success, an error code otherwise
      */
     uint16_t
-    setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
+    getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
 
     /**
      * setAutomaticSelfCalibrationInitialPeriod - value in hours
@@ -301,12 +290,23 @@ class SensirionI2CScd4x {
      * @return 0 on success, an error code otherwise
      */
     uint16_t
-    setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+    setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
 
     /**
      * setAutomaticSelfCalibrationStandardPeriod - value in hours
      *
      * @param ascStandardPeriod number of hours to regularly trigger ASC
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t
+    setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+
+    /**
+     * startLowPowerPeriodicMeasurement() - Start low power periodic
+     * measurement, signal update interval is 30 seconds.
+     *
+     * @note This command is only available in idle mode.
      *
      * @return 0 on success, an error code otherwise
      */
