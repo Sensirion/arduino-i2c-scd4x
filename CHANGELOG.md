@@ -7,8 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.4.0] - 2023-03-06
+
+### Added
+- Methods for ASC (Automatic Self Calibration)
+
+### Breaking changes
+- Renamed getDataReadyStatus to getDataReadyFlag 
+
 ### Fixed
 - RH/T conversion now uses correct constant: `2^16 - 1`
+- Fixed a few comments
+- Initializing the output variables to zero 
 
 ## [0.3.1] - 2021-04-30
 
