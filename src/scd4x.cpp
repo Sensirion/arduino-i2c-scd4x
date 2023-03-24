@@ -39,15 +39,10 @@
 #include "Scd4x.h"
 #include <Wire.h>
 
-uint8_t scd4x::begin(TwoWire& port, uint8_t addr,
-                     bool startPeriodicMeasurement) {
+uint8_t scd4x::begin(TwoWire& port, uint8_t addr) {
     _i2cPort = &port;
     _address = addr;
     _i2cPort->beginTransmission(_address);
-    if (startPeriodicMeasurement) {
-        _i2cPort->write(0x21);
-        _i2cPort->write(0xb1);
-    }
     return _i2cPort->endTransmission();
 }
 
@@ -469,7 +464,7 @@ uint8_t scd4x::readMeasurement(double& co2, double& temperature, double& humidit
 
 bool scd4x::isDataReady() {
 
-    const int bytesRequested = 1;
+    const int bytesRequested = 3;
 
     _i2cPort->beginTransmission(_address);
     _i2cPort->write(0xe4);

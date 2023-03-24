@@ -50,8 +50,7 @@ class scd4x {
      * @param i2cBus Arduino stream object to use for communication.
      *
      */
-    uint8_t begin(TwoWire& port = Wire, uint8_t addr = SCD4X_I2C_ADDRESS,
-                  bool startPeriodicMeasurement = true);
+    uint8_t begin(TwoWire& port = Wire, uint8_t addr = SCD4X_I2C_ADDRESS);
 
     /**
      * startPeriodicMeasurement() - start periodic measurement, signal update

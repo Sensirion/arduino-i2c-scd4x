@@ -1,76 +1,44 @@
-# Sensirion I2C SCD4x Arduino Library
+# SCD4x Library
 
-This is the Sensirion SCD4x library for Arduino using the I2C interface.
+This is a library to interface with the Sensirion SCD4x in Arduino using the I2C protocol.
 
-[<center><img src="images/SCD41_Development_Board.png" width="300px"></center>](https://sensirion.com/my-scd-ek)
+## Features
+- use multiple I2C Busses -> scd4x.begin(Wire1);
+- no extra dependencies
+- only implements necessary functions
+- uses doubles (64bit floating point numbers) for proper accurate data calculations
 
-Click [here](https://sensirion.com/my-scd-ek) to learn more about the SCD4x
-sensor and the SCD41 Evaluation Kit Board.
+## Warnings
+- not all functions are implemented
+- not compatible with other SCD4x arduino libraries
+- only tested with the esp32
+- under active development
 
-# Installation
-
-To install, download the latest release as .zip file and add it to your
-[Arduino IDE](http://www.arduino.cc/en/main/software) via
-
-	Sketch => Include Library => Add .ZIP Library...
-
-Don't forget to **install the dependencies** listed below the same way via `Add
-.ZIP Library`
-
-Note: Installation via the Arduino Library Manager is coming soon.
-
-# Dependencies
-
-* [Sensirion Core](https://github.com/Sensirion/arduino-core)
+### Setup
+```c++
+#include "scd4x.h"
+scd4x scd4x;
+double CO2 = 0, temperature = 0, humidity = 0;
 
 
-# Quick Start
+Wire.begin();
+scd4x.begin(Wire);
+scd4x.startPeriodicMeasurement();
+```
+### Loop
+```c++
+while (scd4x.isDataReady() == false) {
+	vTaskDelay(50 / portTICK_PERIOD_MS);
+}
 
-1. Connect the SCD4x sensor to your Arduino board's standard I2C bus. Check
-   the pinout of your Arduino board to find the correct pins. The pinout of the
-   SCD4x sensor board can be found [here](https://sensirion.com/my-scd-ek)
-
-	* **VDD** of the SEK-SCD41 to the **3.3V** of your Arduino board (5V is also possible)
-	* **GND** of the SEK-SCD41 to the **GND** of your Arduino board
-	* **SCL** of the SEK-SCD41 to the **SCL** of your Arduino board
-	* **SDA** of the SEK-SCD41 to the **SDA** of your Arduino board
-
-2. Open the `exampleUsage` sample project within the Arduino IDE
-
-		File => Examples => Sensirion I2C Scd4x => exampleUsage
-
-3. Click the `Upload` button in the Arduino IDE or
-
-		Sketch => Upload
-
-4. When the upload process has finished, open the `Serial Monitor` or `Serial
-   Plotter` via the `Tools` menu to observe the measured CO2, Temperature and
-   Humidity values. Note that the `Baud Rate` in the corresponding window has
-   to be set to `115200 baud`.
-
-# Contributing
-
-**Contributions are welcome!**
-
-We develop and test this driver using our company internal tools (version
-control, continuous integration, code review etc.) and automatically
-synchronize the master branch with GitHub. But this doesn't mean that we don't
-respond to issues or don't accept pull requests on GitHub. In fact, you're very
-welcome to open issues or create pull requests :)
-
-This Sensirion library uses
-[`clang-format`](https://releases.llvm.org/download.html) to standardize the
-formatting of all our `.cpp` and `.h` files. Make sure your contributions are
-formatted accordingly:
-
-The `-i` flag will apply the format changes to the files listed.
-
-```bash
-clang-format -i *.cpp *.h
+if (scd4x.readMeasurement(CO2, temperature, humidity) == 0) {
+	Serial.printf("%4.0f,%2.1f,%1.0f\n", CO2, temperature, humidity);
+}
+vTaskDelay(4750 / portTICK_PERIOD_MS);
 ```
 
-Note that differences from this formatting will result in a failed build until
-they are fixed.
+## 🖼️ Schematic
+![Schematic](/images/schematic.png)
 
 # License
 
