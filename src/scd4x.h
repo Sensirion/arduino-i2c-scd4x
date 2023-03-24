@@ -36,24 +36,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SENSIRIONI2CSCD4X_H
-#define SENSIRIONI2CSCD4X_H
-
+#include <Arduino.h>
 #include <Wire.h>
 
-#include <SensirionCore.h>
+#define SCD4X_I2C_ADDRESS (0x62)  // 7-bit I2C Address
 
-class SensirionI2CScd4x {
+class scd4x {
 
   public:
-    SensirionI2CScd4x();
     /**
      * begin() - Initializes the SensirionI2CScd4x class.
      *
      * @param i2cBus Arduino stream object to use for communication.
      *
      */
-    void begin(TwoWire& i2cBus);
+    uint8_t begin(TwoWire& port = Wire, uint8_t addr = SCD4X_I2C_ADDRESS,
+                  bool startPeriodicMeasurement = true);
 
     /**
      * startPeriodicMeasurement() - start periodic measurement, signal update
@@ -63,7 +61,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t startPeriodicMeasurement(void);
+    uint8_t startPeriodicMeasurement();
 
     /**
      * readMeasurementTicks() - read sensor output. The measurement data can
@@ -85,8 +83,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t readMeasurementTicks(uint16_t& co2, uint16_t& temperature,
-                                  uint16_t& humidity);
+    // uint16_t readMeasurementTicks(uint16_t& co2, uint16_t& temperature,
+    //                               uint16_t& humidity);
 
     /**
      * readMeasurement() - read sensor output. The measurement data can
@@ -108,8 +106,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t readMeasurement(uint16_t& co2, float& temperature,
-                             float& humidity);
+    uint8_t readMeasurement(double& co2, double& temperature,
+                                   double& humidity);
 
     /**
      * stopPeriodicMeasurement() - Stop periodic measurement and return to idle
@@ -119,7 +117,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t stopPeriodicMeasurement(void);
+    //uint16_t stopPeriodicMeasurement(void);
 
     /**
      * getTemperatureOffsetTicks() - The temperature offset represents the
@@ -133,7 +131,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getTemperatureOffsetTicks(uint16_t& tOffset);
+    // uint16_t getTemperatureOffsetTicks(uint16_t& tOffset);
 
     /**
      * getTemperatureOffset() - The temperature offset represents the difference
@@ -146,7 +144,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getTemperatureOffset(float& tOffset);
+    // uint16_t getTemperatureOffset(float& tOffset);
 
     /**
      * setTemperatureOffsetTicks() - Setting the temperature offset of the SCD4x
@@ -164,7 +162,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setTemperatureOffsetTicks(uint16_t tOffset);
+    // uint16_t setTemperatureOffsetTicks(uint16_t tOffset);
 
     /**
      * setTemperatureOffset() - Setting the temperature offset of the SCD4x
@@ -181,7 +179,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setTemperatureOffset(float tOffset);
+    // uint16_t setTemperatureOffset(float tOffset);
 
     /**
      * getSensorAltitude() - Get configured sensor altitude in meters above sea
@@ -194,7 +192,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getSensorAltitude(uint16_t& sensorAltitude);
+    // uint16_t getSensorAltitude(uint16_t& sensorAltitude);
 
     /**
      * setSensorAltitude() - Set sensor altitude in meters above sea level. Note
@@ -207,7 +205,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setSensorAltitude(uint16_t sensorAltitude);
+    // uint16_t setSensorAltitude(uint16_t sensorAltitude);
 
     /**
      * setAmbientPressure() - The set_ambient_pressure command can be sent
@@ -222,7 +220,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setAmbientPressure(uint16_t ambientPressure);
+    // uint16_t setAmbientPressure(uint16_t ambientPressure);
 
     /**
      * performForcedRecalibration() - To successfully conduct an accurate forced
@@ -241,8 +239,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t performForcedRecalibration(uint16_t targetCo2Concentration,
-                                        uint16_t& frcCorrection);
+    // uint16_t performForcedRecalibration(uint16_t targetCo2Concentration,
+    //                                     uint16_t& frcCorrection);
 
     /**
      * getAutomaticSelfCalibration() - By default, the ASC is enabled.
@@ -251,7 +249,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getAutomaticSelfCalibration(uint16_t& ascEnabled);
+    // uint16_t getAutomaticSelfCalibration(uint16_t& ascEnabled);
 
     /**
      * setAutomaticSelfCalibration() - By default, the ASC is enabled.
@@ -260,7 +258,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setAutomaticSelfCalibration(uint16_t ascEnabled);
+    // uint16_t setAutomaticSelfCalibration(uint16_t ascEnabled);
 
     /**
      * getAutomaticSelfCalibrationInitialPeriod - value in hours
@@ -269,8 +267,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t
-    getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
+    //uint16_t
+    // getAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
 
     /**
      * getAutomaticSelfCalibrationStandardPeriod - value in hours
@@ -279,8 +277,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t
-    getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+    // uint16_t
+    // getAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
 
     /**
      * setAutomaticSelfCalibrationInitialPeriod - value in hours
@@ -289,8 +287,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t
-    setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
+    // uint16_t
+    // setAutomaticSelfCalibrationInitialPeriod(uint16_t& ascInitialPeriod);
 
     /**
      * setAutomaticSelfCalibrationStandardPeriod - value in hours
@@ -299,8 +297,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t
-    setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
+    // uint16_t
+    // setAutomaticSelfCalibrationStandardPeriod(uint16_t& ascStandardPeriod);
 
     /**
      * startLowPowerPeriodicMeasurement() - Start low power periodic
@@ -310,7 +308,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t startLowPowerPeriodicMeasurement(void);
+    // uint16_t startLowPowerPeriodicMeasurement(void);
 
     /**
      * getDataReadyFlag() - Check whether new measurement data is available
@@ -320,7 +318,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getDataReadyFlag(bool& dataReadyFlag);
+    bool isDataReady();
 
     /**
      * persistSettings() - Configuration settings such as the temperature
@@ -338,7 +336,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t persistSettings(void);
+    // uint16_t persistSettings(void);
 
     /**
      * getSerialNumber() - Reading out the serial number can be used to identify
@@ -354,8 +352,8 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getSerialNumber(uint16_t& serial0, uint16_t& serial1,
-                             uint16_t& serial2);
+    // uint16_t getSerialNumber(uint16_t& serial0, uint16_t& serial1,
+    //                          uint16_t& serial2);
 
     /**
      * performSelfTest() - The perform_self_test feature can be used as an
@@ -365,7 +363,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t performSelfTest(uint16_t& sensorStatus);
+    // uint16_t performSelfTest(uint16_t& sensorStatus);
 
     /**
      * performFactoryReset() - Initiates the reset of all configurations stored
@@ -380,7 +378,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t performFactoryReset(void);
+    // uint16_t performFactoryReset(void);
 
     /**
      * reinit() - The reinit command reinitializes the sensor by reloading user
@@ -393,7 +391,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t reinit(void);
+    // uint16_t reinit(void);
 
     /**
      * measureSingleShot() - On-demand measurement of CO₂ concentration,
@@ -404,7 +402,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t measureSingleShot(void);
+    // uint16_t measureSingleShot(void);
 
     /**
      * measureSingleShotRhtOnly() - On-demand measurement of relative humidity
@@ -414,7 +412,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t measureSingleShotRhtOnly(void);
+    // uint16_t measureSingleShotRhtOnly(void);
 
     /**
      * powerDown() - Put the sensor from idle to sleep mode to reduce current
@@ -424,7 +422,7 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t powerDown(void);
+    // uint16_t powerDown(void);
 
     /**
      * wakeUp() - Wake up sensor from sleep mode to idle mode.
@@ -433,10 +431,15 @@ class SensirionI2CScd4x {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t wakeUp(void);
+    // uint16_t wakeUp(void);
 
   private:
-    TwoWire* _i2cBus = nullptr;
-};
+    uint8_t _isValid = false;
+    int _address;
+    bool _init = false;
+    TwoWire* _i2cPort;
 
-#endif /* SENSIRIONI2CSCD4X_H */
+    bool inRange(double value, double max, double min) {
+        return !(value <= min) && (value <= max);
+    }
+};
