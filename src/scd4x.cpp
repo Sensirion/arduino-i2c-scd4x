@@ -29,18 +29,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Scd4x.h"
-#include <Wire.h>
+#include "scd4x.h"
 
-uint8_t scd4x::begin(TwoWire& port, uint8_t addr) {
-    _i2cPort = &port;
+uint8_t scd4x_Class::begin(TwoWire& port, uint8_t addr) {
+	_i2cPort = &port;
     _address = addr;
     _i2cPort->beginTransmission(_address);
     return _i2cPort->endTransmission();
 }
 
-uint8_t scd4x::startPeriodicMeasurement() {
-    _i2cPort->beginTransmission(_address);
+uint8_t scd4x_Class::startPeriodicMeasurement() {
+	_i2cPort->beginTransmission(_address);
     _i2cPort->write(0x21);
     _i2cPort->write(0xb1);
     return _i2cPort->endTransmission();
@@ -79,9 +78,8 @@ uint8_t scd4x::startPeriodicMeasurement() {
 //     return error;
 // }
 
-uint8_t scd4x::readMeasurement(double& co2, double& temperature, double& humidity) {
-
-    const int bytesRequested = 12;
+uint8_t scd4x_Class::readMeasurement(double& co2, double& temperature, double& humidity) {
+	const int bytesRequested = 12;
 
     _i2cPort->beginTransmission(_address);
     _i2cPort->write(0xec);
@@ -455,9 +453,8 @@ uint8_t scd4x::readMeasurement(double& co2, double& temperature, double& humidit
 //                                                 *_i2cBus);
 // }
 
-bool scd4x::isDataReady() {
-
-    const int bytesRequested = 3;
+bool scd4x_Class::isDataReady() {
+	const int bytesRequested = 3;
 
     _i2cPort->beginTransmission(_address);
     _i2cPort->write(0xe4);

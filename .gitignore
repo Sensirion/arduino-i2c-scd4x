@@ -1,14 +1,2 @@
-app
-build
-arduino-core
-hardware
-build
-test-bin
-*.iml
-.idea
+.vscode
 .DS_Store
-.directory
-avr-toolchain-*.zip
-manifest.mf
-nbbuild.xml
-nbproject

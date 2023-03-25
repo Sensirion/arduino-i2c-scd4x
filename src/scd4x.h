@@ -28,11 +28,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#pragma once
+
+#include <Arduino.h>
+#include <Wire.h>
+
 #define SCD4X_I2C_ADDRESS (0x62)  // 7-bit I2C Address
 
-class scd4x {
-
-  public:
+class scd4x_Class {
+   public:
     /**
      * begin() - Initializes the SensirionI2CScd4x class.
      *
