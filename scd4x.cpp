@@ -29,8 +29,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "scd4x.h"
-
 uint8_t scd4x_Class::begin(TwoWire& port, uint8_t addr) {
 	_i2cPort = &port;
     _address = addr;

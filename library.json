@@ -1,0 +1,12 @@
+{
+  "name": "scd4x-CO2",
+  "keywords": "sensor, co2",
+  "description": "A library for the SCD4x",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/CDFER/scd4x-CO2.git"
+  },
+  "frameworks": "arduino",
+  "platforms": "espressif32"
+}
