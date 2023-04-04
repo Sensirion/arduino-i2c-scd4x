@@ -1,6 +1,6 @@
 # SCD4x Library
 
-This is a library to interface with the Sensirion SCD4x in Arduino using the I2C protocol.
+This is a library to interface with the Sensirion SCD4x true CO2 sensors in Arduino using the I2C protocol.
 
 ## Features
 - use multiple I2C Busses -> scd4x.begin(Wire1);
@@ -10,7 +10,7 @@ This is a library to interface with the Sensirion SCD4x in Arduino using the I2C
 
 ## Warnings
 - not all functions are implemented
-- not compatible with other SCD4x arduino libraries
+- not compatible with other SCD4x Arduino libraries
 - only tested with the esp32
 - under active development
 
@@ -39,7 +39,14 @@ vTaskDelay(4750 / portTICK_PERIOD_MS); //new data available after approx 5 secon
 
 ## 🖼️ Schematic
 ![Schematic](/images/schematic.png)
+- the scd4x sensor can draw up to 205ma peaks at 3.3V (only 18ma average) so make sure you have a robust power source (the above schematic has been tested to work)
+- you only need to solder the 6 pins shown and the thermal pad on the underside to get it working
+- unfortunately, I have not found a way to easily solder these sensors with a soldering iron, a oven or hotplate seems to be the only way
+- look out for a temperature offset if you place the sensor in a case of sorts
 
-# License
+## Based on the awesome work of Raphael Nestler and everyone at Sensirion AG
+Origin created by Raphael Nestler in 2021
+https://github.com/Sensirion/arduino-i2c-scd4x
 
-See [LICENSE](LICENSE).
+
+To help support my work check out my store: https://keastudios.co.nz/
