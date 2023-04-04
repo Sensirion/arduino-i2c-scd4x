@@ -17,7 +17,7 @@ This is a library to interface with the Sensirion SCD4x in Arduino using the I2C
 ### Setup
 ```c++
 #include "scd4x.h"
-scd4x scd4x;
+SCD4X co2;
 double CO2 = 0, temperature = 0, humidity = 0;
 
 
@@ -27,14 +27,14 @@ scd4x.startPeriodicMeasurement();
 ```
 ### Loop
 ```c++
-while (scd4x.isDataReady() == false) {
-	vTaskDelay(50 / portTICK_PERIOD_MS);
+while (co2.isDataReady() == false) {
+	vTaskDelay(50 / portTICK_PERIOD_MS); //check every 50ms
 }
 
-if (scd4x.readMeasurement(CO2, temperature, humidity) == 0) {
-	Serial.printf("%4.0f,%2.1f,%1.0f\n", CO2, temperature, humidity);
+if (co2.readMeasurement(CO2, temperature, humidity) == 0) {
+	Serial.printf("%4.0f,%2.1f,%1.0f\n", CO2, temperature, humidity); //nice formatting of data
 }
-vTaskDelay(4750 / portTICK_PERIOD_MS);
+vTaskDelay(4750 / portTICK_PERIOD_MS); //new data available after approx 5 seconds
 ```
 
 ## 🖼️ Schematic
