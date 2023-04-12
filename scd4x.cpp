@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2021, Sensirion AG
+ * Copyright (c) 2023, Chris Dirks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +40,8 @@ uint8_t SCD4X::begin(TwoWire& port, uint8_t addr) {
 }
 
 bool SCD4X::isConnected(TwoWire& port, Stream* stream, uint8_t addr) {
+	const int bytesRequested = 3;
+
 	_i2cPort = &port;
 	_address = addr;
 
@@ -46,6 +49,11 @@ bool SCD4X::isConnected(TwoWire& port, Stream* stream, uint8_t addr) {
 
 	_i2cPort->beginTransmission(_address);
 	_error = _i2cPort->endTransmission(true);
+
+	SCD4X::stopPeriodicMeasurement();
+	vTaskDelay(500 / portTICK_PERIOD_MS);  // wait for SCD4x to stop as per datasheet
+
+	SCD4X::factoryReset();
 
 	char addrCheck[32];
 	if (_error != 0) {
@@ -58,11 +66,11 @@ bool SCD4X::isConnected(TwoWire& port, Stream* stream, uint8_t addr) {
 	_i2cPort->write(0x39);
 	_i2cPort->endTransmission(true);
 
-	vTaskDelay(10000 / portTICK_PERIOD_MS);
+	vTaskDelay(10000 / portTICK_PERIOD_MS);	 // wait for SCD4x to do a self test as per datasheet
 
-	uint8_t temp[3];
-	if (_i2cPort->requestFrom(_address, (uint8_t)3)) {
-		Wire.readBytes(temp, 3);
+	uint8_t temp[bytesRequested];
+	if (_i2cPort->requestFrom(_address, bytesRequested)) {
+		_i2cPort->readBytes(temp, bytesRequested);
 	}
 
 	if (temp[0] != 0 || temp[1] != 0 || temp[2] != 0x81) {
@@ -72,6 +80,13 @@ bool SCD4X::isConnected(TwoWire& port, Stream* stream, uint8_t addr) {
 
 	_debug_output_stream->printf("SCD4x Connected Correctly\r\n");
 	return true;
+}
+
+uint8_t SCD4X::stopPeriodicMeasurement() {
+	_i2cPort->beginTransmission(_address);
+	_i2cPort->write(0x3f);
+	_i2cPort->write(0x86);
+	return _i2cPort->endTransmission();
 }
 
 uint8_t SCD4X::startPeriodicMeasurement() {
@@ -94,10 +109,10 @@ uint8_t SCD4X::readMeasurement(double& co2, double& temperature, double& humidit
 		// 2 bytes sensor status, 1 byte CRC
 		// stop reading after bytesRequested (12 bytes)
 
-		uint8_t bytesReceived = Wire.requestFrom(_address, bytesRequested);
+		uint8_t bytesReceived = _i2cPort->requestFrom(_address, bytesRequested);
 		if (bytesReceived == bytesRequested) {	// If received requested amount of bytes
 			uint8_t data[bytesReceived];
-			Wire.readBytes(data, bytesReceived);
+			_i2cPort->readBytes(data, bytesReceived);
 
 			// floating point conversion
 			co2 = (double)((uint16_t)data[0] << 8 | data[1]);
@@ -111,11 +126,12 @@ uint8_t SCD4X::readMeasurement(double& co2, double& temperature, double& humidit
 				return false;
 			} else {
 				ESP_LOGE("measurement", "out of range");
+				Serial.printf("%4.0f,%2.1f,%1.0f\n", co2, temperature, humidity);
 				return true;
 			}
 
 		} else {
-			//ESP_LOGE("Wire.requestFrom", "bytesReceived(%i) != bytesRequested(%i)", bytesReceived, bytesRequested);
+			// ESP_LOGE("Wire.requestFrom", "bytesReceived(%i) != bytesRequested(%i)", bytesReceived, bytesRequested);
 			return true;
 		}
 	} else {
@@ -132,10 +148,10 @@ bool SCD4X::isDataReady() {
 	_i2cPort->write(0xb8);
 
 	if (_i2cPort->endTransmission(true) == 0) {
-		uint8_t bytesReceived = Wire.requestFrom(_address, bytesRequested);
+		uint8_t bytesReceived = _i2cPort->requestFrom(_address, bytesRequested);
 		if (bytesReceived == bytesRequested) {	// If received requested amount of bytes
 			uint8_t data[bytesReceived];
-			Wire.readBytes(data, bytesReceived);
+			_i2cPort->readBytes(data, bytesReceived);
 			return data[1] != (0x00);  // check if last 8 bits are not 0
 
 		} else {
@@ -148,4 +164,37 @@ bool SCD4X::isDataReady() {
 		ESP_LOGE("Wire.endTransmission", "Returned ERROR");
 		return false;
 	}
+}
+
+uint8_t SCD4X::setSelfCalibrationMode(bool enableSelfCalibration) {
+	SCD4X::stopPeriodicMeasurement();
+	vTaskDelay(500 / portTICK_PERIOD_MS);  // wait for SCD4x to stop as per datasheet
+
+	SCD4X::factoryReset();
+
+	_i2cPort->beginTransmission(_address);
+	_i2cPort->write(0x24);
+	_i2cPort->write(0x16);
+	if (enableSelfCalibration) {
+		_i2cPort->write(0x01);
+	} else {
+		_i2cPort->write(0x00);
+	}
+
+	_error = _i2cPort->endTransmission();
+	if (_error != 0) {
+		return _error;
+	} else {
+		return SCD4X::saveSettings();
+	}
+}
+
+uint8_t SCD4X::saveSettings() {
+	_i2cPort->beginTransmission(_address);
+	_i2cPort->write(0x36);
+	_i2cPort->write(0x15);
+	_error = _i2cPort->endTransmission();
+	ESP_LOGI("Settings Saved to EEPROM", "");
+	vTaskDelay(800 / portTICK_PERIOD_MS);  // wait for SCD4x to saveSettings as per datasheet
+	return _error;
 }
