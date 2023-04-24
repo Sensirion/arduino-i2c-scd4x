@@ -1,6 +1,6 @@
 {
 "name": "scd4x-CO2",
-"version": "1.0.0",
+"version": "1.1.0",
 "description": "A library to interface esp chips with the SCD4x CO2 sensors in the Arduino (c++) Framework.",
 "keywords": "co2, scd40, scd41, scd4x, i2c",
 "repository": {

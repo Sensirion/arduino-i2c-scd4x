@@ -2,6 +2,20 @@
 
 This is a library to interface with the Sensirion SCD4x true CO2 sensors in Arduino using the I2C protocol.
 
+## Warning
+These sensors by default have an auto-calibrate mode that takes the lowest CO2 level from the last week and assumes it is 400ppm. This can cause the sensor to read hundreds of ppm off if it is in a room that doesn't get to 400ppm of CO2 in a week. It's important to be aware of this issue, as some scientific papers are even using this sensor and haven't noticed the problem. Here is the code that you need to permanently set them to not auto calibrate. To avoid unnecessary wear of the EEPROM, the saveSettings command should only be used sparingly. The EEPROM is guaranteed to endure at least 2000 write cycles before failure.
+
+```c++
+#include "scd4x.h"
+
+Wire.begin();
+co2.begin(Wire);
+co2.setCalibrationMode(false);
+co2.saveSettings();
+```
+
+Despite this issue with the auto-calibration mode, I still believe that the Sensirion SCD4x CO2 Sensors are a great choice for measuring indoor air quality. In my experience, they have proven to be much more accurate than other popular sensors such as eCO2 sensors. It's important to be aware of this particular limitation and take the necessary steps to disable the auto-calibration mode, but overall, these sensors are a reliable and effective tool for monitoring CO2 levels.
+
 ## Features
 - use multiple I2C Busses -> scd4x.begin(Wire1);
 - no extra dependencies
@@ -12,7 +26,6 @@ This is a library to interface with the Sensirion SCD4x true CO2 sensors in Ardu
 - not all functions are implemented
 - not compatible with other SCD4x Arduino libraries
 - only tested with the esp32
-- under active development
 
 ### Setup
 ```c++
@@ -20,10 +33,9 @@ This is a library to interface with the Sensirion SCD4x true CO2 sensors in Ardu
 SCD4X co2;
 double CO2 = 0, temperature = 0, humidity = 0;
 
-
 Wire.begin();
-scd4x.begin(Wire);
-scd4x.startPeriodicMeasurement();
+co2.begin(Wire);
+co2.startPeriodicMeasurement();
 ```
 ### Loop
 ```c++
