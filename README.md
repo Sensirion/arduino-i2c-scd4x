@@ -41,7 +41,6 @@ Despite the auto-calibration issue, the Sensirion SCD4x CO2 Sensors remain an ex
 * No extra dependencies required
 * Implements only necessary functions
 * Uses doubles (64-bit floating-point numbers) for accurate data calculations
-  
 
 ## Warnings
 - not all functions are implemented
@@ -89,11 +88,11 @@ vTaskDelay(4750 / portTICK_PERIOD_MS); //new data available after approx 5 secon
 | `setCalibrationMode()`       | Sets the calibration mode and stores it in the EEPROM of the SCD4x. The automatic self-calibration algorithm assumes that the sensor is exposed to the atmospheric CO2 concentration of 400 ppm at least once per week. Use this function sparingly to avoid unnecessary wear of the EEPROM. |
 | `getCalibrationMode()`       | Gets the calibration mode. Returns `true` if auto calibration is enabled, `false` otherwise.                                                                                                                                                                                                 |
 | `saveSettings()`             | Stores settings in the EEPROM of the SCD4x. Wait at least 800ms before sending further commands. EEPROM is guaranteed to endure at least 2000 write cycles before failure.                                                                                                                   |
+| `getErrorText()`             | Converts an error code into descriptive text. Returns a pointer to a constant character array containing the descriptive text of the error. If the error code is not recognized, "Unknown error" is returned.                                                                                    |
 
 ## Credits
 Based on the work of Raphael Nestler and everyone at Sensirion AG.
 Originally created by Raphael Nestler in 2021.
 https://github.com/Sensirion/arduino-i2c-scd4x
 
-
-To help support my work check out my store: https://keastudios.co.nz/
+To help support my work, check out my store: https://keastudios.co.nz/
