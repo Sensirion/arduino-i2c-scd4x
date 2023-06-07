@@ -35,8 +35,13 @@
 uint8_t SCD4X::begin(TwoWire& port, uint8_t addr) {
 	_i2cPort = &port;
 	_address = addr;
+
+	// Begin I2C transmission with the sensor's address
 	_i2cPort->beginTransmission(_address);
+
+	// End I2C transmission and retrieve the error code
 	_error = _i2cPort->endTransmission();
+
 	return _error;
 }
 
@@ -58,7 +63,7 @@ bool SCD4X::isConnected(TwoWire& port, Stream* stream, uint8_t addr) {
 	_commandSequence(0x3639);
 
 	vTaskDelay(10000 / portTICK_PERIOD_MS);	 // wait for SCD4x to do a self test as per datasheet
-	
+
 	uint8_t temp[bytesRequested];
 	if (_i2cPort->requestFrom(_address, bytesRequested)) {
 		_i2cPort->readBytes(temp, bytesRequested);
@@ -102,13 +107,14 @@ uint8_t SCD4X::readMeasurement(double& co2, double& temperature, double& humidit
 			uint8_t data[bytesReceived];
 			_i2cPort->readBytes(data, bytesReceived);
 
-			// floating point conversion
+			// converter co2 ppm to floating point
 			co2 = (double)((uint16_t)data[0] << 8 | data[1]);
-			// convert T in degC
+			// convert to temperature in degC
 			temperature = (double)-45 + (double)175 * (double)((uint16_t)data[3] << 8 | data[4]) / (double)65536;
-			// convert RH in %
+			// convert to relative humidity to %
 			humidity = (double)100 * (double)((uint16_t)data[6] << 8 | data[7]) / (double)65536;
 
+			// Check if measurements are within range
 			if (inRange(co2, 40000, 0) && inRange(temperature, 60, -10) &&
 				inRange(humidity, 100, 0)) {
 				return 0;
@@ -144,7 +150,6 @@ uint8_t SCD4X::setCalibrationMode(bool enableSelfCalibration) {
 
 	if (enableSelfCalibration) {
 		SCD4X::_writeSequence(0x2416, 0x0001, 0xB0);
-		
 	} else {
 		SCD4X::_writeSequence(0x2416, 0x0000, 0x81);
 	}
