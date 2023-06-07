@@ -3,6 +3,7 @@
         "datasheet",
         "EEPROM",
         "LOGI",
+        "selftest",
         "Sensirion"
     ]
 }

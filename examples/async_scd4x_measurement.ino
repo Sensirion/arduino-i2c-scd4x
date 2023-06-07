@@ -6,7 +6,7 @@
 
   Instructions:
   - Install the SCD4X library in your Arduino IDE or add it to platformio.ini
-  - Connect the SCD4X CO2 sensor to the following pins on your Arduino board:
+  - Connect the SCD4X CO2 sensor to the ESP32:
 	- SDA: GPIO 21
 	- SCL: GPIO 22
 	- VCC: 3V3 (3.3V)

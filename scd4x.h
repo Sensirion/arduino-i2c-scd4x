@@ -33,7 +33,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#define SCD4X_I2C_ADDRESS 0x62	// 7-bit I2C Address
+#define SCD4X_I2C_ADDRESS 0x62	// I2C Address
 
 class SCD4X {
    public:
@@ -54,7 +54,7 @@ class SCD4X {
 	uint8_t begin(TwoWire& port = Wire, uint8_t addr = SCD4X_I2C_ADDRESS);
 
 	/**
-	 * Checks for correct response, manufacturer ID, and part ID.
+	 * Checks for correct response, manufacturer ID, part ID, and does a quick selftest.
 	 *
 	 * @param port Wire instance (e.g., Wire or Wire1)
 	 * @param stream Debug output pointer (e.g., &Serial)
