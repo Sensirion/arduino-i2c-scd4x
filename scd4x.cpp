@@ -163,3 +163,26 @@ uint8_t SCD4X::saveSettings() {
 	vTaskDelay(800 / portTICK_PERIOD_MS);  // wait for SCD4x to saveSettings as per datasheet
 	return _error;
 }
+
+const char* SCD4X::getErrorText(uint8_t errorCode) {
+	switch (errorCode) {
+		case 0:
+			return "Success";
+		case 1:
+			return "I2C data too long to fit in transmit buffer";
+		case 2:
+			return "I2C received NACK on transmit of address";
+		case 3:
+			return "I2C received NACK on transmit of data";
+		case 4:
+			return "I2C other error";
+		case 5:
+			return "I2C timeout";
+		case 6:
+			return "bytesReceived(%i) != bytesRequested(%i)";
+		case 7:
+			return "Measurement out of range";
+		default:
+			return "Unknown error";
+	}
+}
