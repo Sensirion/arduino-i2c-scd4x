@@ -1,21 +1,25 @@
 {
-"name": "scd4x-CO2",
-"version": "1.1.0",
-"description": "A library to interface esp chips with the SCD4x CO2 sensors in the Arduino (c++) Framework.",
-"keywords": "co2, scd40, scd41, scd4x, i2c",
-"repository": {
-    "type": "git",
-    "url": "https://github.com/CDFER/scd4x-CO2.git"
-},
-"authors": [
-    {
+    "name": "scd4x-CO2",
+    "version": "1.2.0",
+    "description": "An Arduino library for interfacing ESP chips with SCD4x CO2 sensors using the I2C protocol.",
+    "keywords": [
+        "co2",
+        "scd40",
+        "scd41",
+        "scd4x",
+        "i2c"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CDFER/scd4x-CO2.git"
+    },
+    "author": {
         "name": "Chris Dirks",
         "url": "https://keastudios.co.nz/about.htm",
         "maintainer": true
-    }
-],
-"license": "MIT",
-"homepage": "https://github.com/CDFER/scd4x-CO2",
-"frameworks": "arduino",
-"platforms": "*"
+    },
+    "license": "Other",
+    "homepage": "https://github.com/CDFER/scd4x-CO2",
+    "frameworks": "arduino",
+    "platforms": "*"
 }
