@@ -145,22 +145,40 @@ bool SCD4X::getCalibrationMode() {
 }
 
 uint8_t SCD4X::setCalibrationMode(bool enableSelfCalibration) {
-	SCD4X::stopPeriodicMeasurement();
+	stopPeriodicMeasurement();
 	vTaskDelay(500 / portTICK_PERIOD_MS);  // wait for SCD4x to stop as per datasheet
 
-	if (enableSelfCalibration) {
-		SCD4X::_writeSequence(0x2416, 0x0001, 0xB0);
-	} else {
-		SCD4X::_writeSequence(0x2416, 0x0000, 0x81);
+	if (enableSelfCalibration != getCalibrationMode()){
+		if (enableSelfCalibration) {
+			_writeSequence(0x2416, 0x0001, 0xB0);
+		} else {
+			_writeSequence(0x2416, 0x0000, 0x81);
+		}
+		_settingsChanged = true;
 	}
 
 	return _error;
 }
 
+uint8_t SCD4X::resetEEPROM() {
+	stopPeriodicMeasurement();
+	vTaskDelay(500 / portTICK_PERIOD_MS);  // wait for SCD4x to stop as per datasheet
+
+	_commandSequence(0x3632);
+	vTaskDelay(1200 / portTICK_PERIOD_MS);  // wait for SCD4x
+
+	return _error;
+}
+
+
 uint8_t SCD4X::saveSettings() {
-	_commandSequence(0x3615);
-	ESP_LOGI("Settings Saved to EEPROM", "");
-	vTaskDelay(800 / portTICK_PERIOD_MS);  // wait for SCD4x to saveSettings as per datasheet
+	if (_settingsChanged){
+		_commandSequence(0x3615);
+		ESP_LOGI("Settings Saved to EEPROM", "");
+		vTaskDelay(800 / portTICK_PERIOD_MS);  // wait for SCD4x to saveSettings as per datasheet
+	} else {
+		ESP_LOGI("Settings not changed, save command not sent", "");
+	}
 	return _error;
 }
 

@@ -126,9 +126,7 @@ class SCD4X {
 	 * Sets the calibration mode and stores it in the EEPROM of the SCD4x.
 	 *
 	 * @note The automatic self-calibration algorithm assumes that the sensor is exposed to the atmospheric CO2 concentration of 400 ppm at least once per week.
-	 *
-	 * @note To avoid unnecessary wear of the EEPROM, the setSelfCalibrationMode command should only be used sparingly.
-	 *
+	 *	 *
 	 * @param enableAutoCalibration Turn on or off self calibration
 	 *
 	 * @retval 0 Success
@@ -148,10 +146,24 @@ class SCD4X {
 	bool getCalibrationMode();
 
 	/**
+	 * Resets of all settings in EEPROM including auto calibration algorithm data
+	 *
+	 * @note This is a 1200ms blocking function.
+	 * @warning this command wears the EEPROM, which is only guaranteed to endure 2000 write cycles before failure.
+	 *
+	 * @retval 0 Success
+	 * @retval 1 I2C data too long to fit in transmit buffer
+	 * @retval 2 I2C received NACK on transmit of address
+	 * @retval 3 I2C received NACK on transmit of data
+	 * @retval 4 I2C other error
+	 * @retval 5 I2C timeout
+	 */
+	uint8_t resetEEPROM();
+
+	/**
 	 * Stores settings in the EEPROM of the SCD4x.
 	 *
-	 * @note Wait at least 800ms before sending further commands.
-	 * EEPROM is guaranteed to endure at least 2000 write cycles before failure.
+	 * @note This is a 800ms blocking function.
 	 *
 	 * @retval 0 Success
 	 * @retval 1 I2C data too long to fit in transmit buffer
@@ -186,6 +198,7 @@ class SCD4X {
 
    private:
 	uint8_t _error = 0;
+	bool _settingsChanged = false;
 	uint8_t _isValid = false;
 	int _address = SCD4X_I2C_ADDRESS;
 	bool _init = false;
