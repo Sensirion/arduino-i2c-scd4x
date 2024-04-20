@@ -1,5 +1,4 @@
-# SCD4x Library
-================
+# SCD4x CO2 Library
 
 The SCD4x Library provides an interface to interact with Sensirion SCD4x true CO2 sensors using the I2C protocol in Arduino.
 
