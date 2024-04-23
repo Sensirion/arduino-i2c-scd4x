@@ -38,7 +38,7 @@
 #define SCD4X_I2C_ADDRESS 0x62
 
 class SCD4X {
-public:
+  public:
     /**
      * Initializes this library. Must be called before any other library functions.
      *
@@ -135,13 +135,13 @@ public:
      */
     const char* getErrorText(uint8_t errorCode);
 
-private:
+  private:
     uint8_t _error = 0;
     bool _settingsChanged = false;
     uint8_t _isValid = false;
     int _address = SCD4X_I2C_ADDRESS;
     TwoWire* _i2cPort = &Wire;
-	Stream* debug_output_stream = &Serial;
+    Stream* debug_output_stream = &Serial;
 
     bool inRange(double value, double max, double min) {
         return !(value <= min) && (value <= max);
@@ -155,7 +155,7 @@ private:
     }
 
     uint16_t _readSequence(uint16_t registerAddress) {
-        const int bytesRequested = 3;   // Check bit at the end
+        const int bytesRequested = 3;  // 2 byte read and 1 check byte at the end
 
         _i2cPort->beginTransmission(_address);
         _i2cPort->write(highByte(registerAddress));

@@ -33,15 +33,15 @@
 #include <scd4x.h>
 
 uint8_t SCD4X::begin(TwoWire& port, uint8_t addr) {
-	_i2cPort = &port;
-	_address = addr;
+    _i2cPort = &port;
+    _address = addr;
 
     // Begin I2C transmission with the sensor's address
     _i2cPort->beginTransmission(_address);
-    
+
     // End I2C transmission and retrieve the error code
     _error = _i2cPort->endTransmission();
-    
+
     return _error;
 }
 
@@ -50,18 +50,18 @@ bool SCD4X::isConnected(TwoWire& port, Stream* stream, uint8_t addr) {
 
     debug_output_stream = stream;
 
-    begin(port, addr); // Start I2C transmission with the sensor's address
+    begin(port, addr);  // Start I2C transmission with the sensor's address
 
-    stopPeriodicMeasurement(); // Stop any ongoing periodic measurements
-    vTaskDelay(500 / portTICK_PERIOD_MS); // Wait for SCD4x to stop as per datasheet
+    stopPeriodicMeasurement();             // Stop any ongoing periodic measurements
+    vTaskDelay(500 / portTICK_PERIOD_MS);  // Wait for SCD4x to stop as per datasheet
 
     if (_error != 0) {
         debug_output_stream->printf("SCD4x returned endTransmission error %i\r\n", _error);
         return false;
     }
 
-    _commandSequence(0x3639); // Send self-test command
-    vTaskDelay(10000 / portTICK_PERIOD_MS); // Wait for SCD4x to do a self test as per datasheet
+    _commandSequence(0x3639);                // Send self-test command
+    vTaskDelay(10000 / portTICK_PERIOD_MS);  // Wait for SCD4x to do a self test as per datasheet
 
     uint8_t temp[bytesRequested];
     if (_i2cPort->requestFrom(_address, bytesRequested)) {
@@ -93,12 +93,12 @@ uint8_t SCD4X::readMeasurement(double& co2, double& temperature, double& humidit
     _i2cPort->beginTransmission(_address);
     _i2cPort->write(0xEC);
     _i2cPort->write(0x05);
-    _error = _i2cPort->endTransmission(false); // No stop bit
+    _error = _i2cPort->endTransmission(false);  // No stop bit
 
     if (_error == 0) {
         uint8_t bytesReceived;
         bytesReceived = _i2cPort->requestFrom(_address, bytesRequested);
-        if (bytesReceived == bytesRequested) { // If received requested amount of bytes
+        if (bytesReceived == bytesRequested) {  // If received requested amount of bytes
             uint8_t data[bytesReceived];
             _i2cPort->readBytes(data, bytesReceived);
 
@@ -120,7 +120,7 @@ uint8_t SCD4X::readMeasurement(double& co2, double& temperature, double& humidit
 }
 
 bool SCD4X::isDataReady() {
-    if ((_readSequence(0xE4B8) & 0x07FF) == 0x0000) { // Lower 11 bits == 0 -> data not ready
+    if ((_readSequence(0xE4B8) & 0x07FF) == 0x0000) {  // Lower 11 bits == 0 -> data not ready
         return false;
     } else {
         return true;
@@ -133,13 +133,13 @@ bool SCD4X::getCalibrationMode() {
 
 uint8_t SCD4X::setCalibrationMode(bool enableSelfCalibration) {
     stopPeriodicMeasurement();
-    vTaskDelay(500 / portTICK_PERIOD_MS); // Wait for SCD4x to stop as per datasheet
+    vTaskDelay(500 / portTICK_PERIOD_MS);  // Wait for SCD4x to stop as per datasheet
 
     if (enableSelfCalibration != getCalibrationMode()) {
         if (enableSelfCalibration) {
             _writeSequence(0x2416, 0x0001, 0xB0);
         } else {
-			_writeSequence(0x2416, 0x0000, 0x81);
+            _writeSequence(0x2416, 0x0000, 0x81);
         }
         _settingsChanged = true;
     }
@@ -149,10 +149,10 @@ uint8_t SCD4X::setCalibrationMode(bool enableSelfCalibration) {
 
 uint8_t SCD4X::resetEEPROM() {
     stopPeriodicMeasurement();
-    vTaskDelay(500 / portTICK_PERIOD_MS); // Wait for SCD4x to stop as per datasheet
+    vTaskDelay(500 / portTICK_PERIOD_MS);  // Wait for SCD4x to stop as per datasheet
 
     _commandSequence(0x3632);
-	vTaskDelay(1200 / portTICK_PERIOD_MS);  // Wait for SCD4x
+    vTaskDelay(1200 / portTICK_PERIOD_MS);  // Wait for SCD4x
 
     return _error;
 }
@@ -161,7 +161,7 @@ uint8_t SCD4X::saveSettings() {
     if (_settingsChanged) {
         _commandSequence(0x3615);
         ESP_LOGI("Settings Saved to EEPROM", "");
-        vTaskDelay(800 / portTICK_PERIOD_MS); // Wait for SCD4x to save settings as per datasheet
+        vTaskDelay(800 / portTICK_PERIOD_MS);  // Wait for SCD4x to save settings as per datasheet
     } else {
         ESP_LOGI("Settings not changed, save command not sent", "");
     }

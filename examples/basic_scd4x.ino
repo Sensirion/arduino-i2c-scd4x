@@ -36,59 +36,59 @@
 SCD4X co2;
 
 void setup() {
-	// Initialize the I2C communication
-	Wire.begin();
+    // Initialize the I2C communication
+    Wire.begin();
 
-	// Initialize the SCD4x library
-	co2.begin();
+    // Initialize the SCD4x library
+    co2.begin();
 
-	// Check if the sensor is connected
-	if (!co2.isConnected()) {
-		while (true) {
-			Serial.println("Sensor not connected. Please check the wiring.");
-			delay(1000);
-		}
-	}
+    // Check if the sensor is connected
+    if (!co2.isConnected()) {
+        while (true) {
+            Serial.println("Sensor not connected. Please check the wiring.");
+            delay(1000);
+        }
+    }
 
-	// Check if auto-calibration is enabled
-	if (co2.getCalibrationMode()) {
-		// Disable auto-calibration
-		co2.setCalibrationMode(false);
+    // Check if auto-calibration is enabled
+    if (co2.getCalibrationMode()) {
+        // Disable auto-calibration
+        co2.setCalibrationMode(false);
 
-		// Save the settings to EEPROM
-		co2.saveSettings();
-	}
+        // Save the settings to EEPROM
+        co2.saveSettings();
+    }
 
-	// Start periodic measurement after updating settings
-	co2.startPeriodicMeasurement();
+    // Start periodic measurement after updating settings
+    co2.startPeriodicMeasurement();
 
-	// Wait for the sensor to warm up and take the first reading
-	delay(5000);
+    // Wait for the sensor to warm up and take the first reading
+    delay(5000);
 }
 
 void loop() {
-	double co2Value, temperature, humidity;
+    double co2Value, temperature, humidity;
 
-	// Read measurement data from the sensor
-	uint8_t errorCode = co2.readMeasurement(co2Value, temperature, humidity);
+    // Read measurement data from the sensor
+    uint8_t errorCode = co2.readMeasurement(co2Value, temperature, humidity);
 
-	// Check for errors
-	if (errorCode == 0) {
-		// Format the measurements into a string
-		char measurementString[100];
-		sprintf(measurementString, "CO2: %.0f ppm, Temperature: %.1f °C, Humidity: %.0f %%RH", co2Value, temperature, humidity);
+    // Check for errors
+    if (errorCode == 0) {
+        // Format the measurements into a string
+        char measurementString[100];
+        sprintf(measurementString, "CO2: %.0f ppm, Temperature: %.1f °C, Humidity: %.0f %%RH", co2Value, temperature, humidity);
 
-		// Print the measurements
-		Serial.println(measurementString);
-	} else {
-		// Convert the error code to text
-		const char* errorText = co2.getErrorText(errorCode);
+        // Print the measurements
+        Serial.println(measurementString);
+    } else {
+        // Convert the error code to text
+        const char* errorText = co2.getErrorText(errorCode);
 
-		// Print the error message
-		Serial.print("Error reading measurement: ");
-		Serial.println(errorText);
-	}
+        // Print the error message
+        Serial.print("Error reading measurement: ");
+        Serial.println(errorText);
+    }
 
-	// Delay for new measurement to be taken
-	delay(5000);
+    // Delay for new measurement to be taken
+    delay(5000);
 }
