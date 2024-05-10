@@ -1,0 +1,10 @@
+name: Github Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  github-release:
+    uses: sensirion/.github/.github/workflows/driver.common.github_release.yml@main
