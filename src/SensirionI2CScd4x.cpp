@@ -588,7 +588,7 @@ uint16_t SensirionI2CScd4x::reinit() {
     return error;
 }
 
-uint16_t SensirionI2CScd4x::measureSingleShot() {
+uint16_t SensirionI2CScd4x::measureSingleShot(bool blocking) {
     uint16_t error;
     uint8_t buffer[2];
     SensirionI2CTxFrame txFrame(buffer, 2);
@@ -600,7 +600,11 @@ uint16_t SensirionI2CScd4x::measureSingleShot() {
 
     error = SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS, txFrame,
                                                  *_i2cBus);
-    delay(5000);
+
+    if (blocking) {
+        delay(5000);
+    }
+
     return error;
 }
 
