@@ -400,11 +400,13 @@ class SensirionI2CScd4x {
      * relative humidity and temperature. The sensor output is read with the
      * read_measurement command.
      *
+     * @param blocking Delay for 5 seconds till on-demand measurement is available
+     *
      * @note Only available in idle mode.
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t measureSingleShot(void);
+    uint16_t measureSingleShot(bool blocking = true);
 
     /**
      * measureSingleShotRhtOnly() - On-demand measurement of relative humidity
