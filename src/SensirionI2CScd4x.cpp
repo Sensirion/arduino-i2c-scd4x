@@ -337,6 +337,59 @@ uint16_t SensirionI2CScd4x::setAutomaticSelfCalibration(uint16_t ascEnabled) {
     return error;
 }
 
+uint16_t
+SensirionI2CScd4x::getAutomaticSelfCalibrationTarget(uint16_t& ascTarget) {
+    uint16_t error;
+    uint8_t buffer[3];
+    SensirionI2CTxFrame txFrame(buffer, 3);
+
+    error = txFrame.addCommand(0x233f);
+    if (error) {
+        return error;
+    }
+
+    error = SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS, txFrame,
+                                                 *_i2cBus);
+    if (error) {
+        return error;
+    }
+
+    delay(1);
+
+    SensirionI2CRxFrame rxFrame(buffer, 3);
+    error = SensirionI2CCommunication::receiveFrame(SCD4X_I2C_ADDRESS, 3,
+                                                    rxFrame, *_i2cBus);
+    if (error) {
+        return error;
+    }
+
+    error |= rxFrame.getUInt16(ascTarget);
+    return error;
+}
+
+uint16_t
+SensirionI2CScd4x::setAutomaticSelfCalibrationTarget(uint16_t ascTarget) {
+    uint16_t error;
+    uint8_t buffer[5];
+    SensirionI2CTxFrame txFrame(buffer, 5);
+
+    if (ascTarget == 0) {
+        error = txFrame.addCommand(0x2416);
+        error |= txFrame.addUInt16(0);
+    } else {
+        error = txFrame.addCommand(0x243a);
+        error |= txFrame.addUInt16(ascTarget);
+    }
+    if (error) {
+        return error;
+    }
+
+    error = SensirionI2CCommunication::sendFrame(SCD4X_I2C_ADDRESS, txFrame,
+                                                 *_i2cBus);
+    delay(1);
+    return error;
+}
+
 uint16_t SensirionI2CScd4x::getAutomaticSelfCalibrationInitialPeriod(
     uint16_t& ascInitialPeriod) {
     uint16_t error;

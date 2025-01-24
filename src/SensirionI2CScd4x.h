@@ -263,6 +263,24 @@ class SensirionI2CScd4x {
     uint16_t setAutomaticSelfCalibration(uint16_t ascEnabled);
 
     /**
+     * setAutomaticSelfCalibrationTarget()
+     *
+     * @param ascTarget the target in ppm, 0 to disable ASC
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t setAutomaticSelfCalibrationTarget(uint16_t ascTarget);
+
+    /**
+     * getAutomaticSelfCalibrationTarget()
+     *
+     * @param ascTarget the target in ppm
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t getAutomaticSelfCalibrationTarget(uint16_t& ascTarget);
+
+    /**
      * getAutomaticSelfCalibrationInitialPeriod - value in hours
      *
      * @param ascInitialPeriod number of hours before ASC is first triggered
