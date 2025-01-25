@@ -265,7 +265,7 @@ class SensirionI2CScd4x {
     /**
      * setAutomaticSelfCalibrationTarget()
      *
-     * @param ascTarget the target in ppm, 0 to disable ASC
+     * @param ascTarget the target in ppm
      *
      * @return 0 on success, an error code otherwise
      */
