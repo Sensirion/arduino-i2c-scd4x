@@ -76,21 +76,18 @@ void setup() {
         Serial.print("Error trying to execute wakeUp(): ");
         errorToString(error, errorMessage, sizeof errorMessage);
         Serial.println(errorMessage);
-        return;
     }
     error = sensor.stopPeriodicMeasurement();
     if (error != NO_ERROR) {
         Serial.print("Error trying to execute stopPeriodicMeasurement(): ");
         errorToString(error, errorMessage, sizeof errorMessage);
         Serial.println(errorMessage);
-        return;
     }
     error = sensor.reinit();
     if (error != NO_ERROR) {
         Serial.print("Error trying to execute reinit(): ");
         errorToString(error, errorMessage, sizeof errorMessage);
         Serial.println(errorMessage);
-        return;
     }
     // Read out information about the sensor
     error = sensor.getSerialNumber(serialNumber, 3);
