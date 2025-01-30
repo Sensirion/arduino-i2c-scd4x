@@ -538,8 +538,7 @@ int16_t SensirionI2cScd4x::persistSettings() {
     return localError;
 }
 
-int16_t SensirionI2cScd4x::getSerialNumber(uint16_t serialNumber[],
-                                           uint16_t serialNumberSize) {
+int16_t SensirionI2cScd4x::getSerialNumber(uint64_t& serialNumber) {
     int16_t localError = NO_ERROR;
     uint8_t* buffer_ptr = communication_buffer;
     SensirionI2CTxFrame txFrame =
@@ -556,8 +555,7 @@ int16_t SensirionI2cScd4x::getSerialNumber(uint16_t serialNumber[],
     if (localError != NO_ERROR) {
         return localError;
     }
-    localError |=
-        rxFrame.getBytes((uint8_t*)serialNumber, (serialNumberSize * 2));
+    localError |= rxFrame.getInteger(reinterpret_cast<uint8_t*>(&serialNumber), LongInteger, 6);
     return localError;
 }
 

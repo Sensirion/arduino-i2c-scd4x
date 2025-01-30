@@ -51,12 +51,10 @@ SensirionI2cScd4x sensor;
 static char errorMessage[64];
 static int16_t error;
 
-void print_ushort_array(uint16_t* array, uint16_t len) {
-    uint16_t i = 0;
+void PrintUint64(uint64_t& value) {
     Serial.print("0x");
-    for (; i < len; i++) {
-        Serial.print(array[i], HEX);
-    }
+    Serial.print((uint32_t)(value >> 32), HEX);
+    Serial.print((uint32_t)(value & 0xFFFFFFFF), HEX);
 }
 
 void setup() {
@@ -68,7 +66,7 @@ void setup() {
     Wire.begin();
     sensor.begin(Wire, SCD41_I2C_ADDR_62);
 
-    uint16_t serialNumber[3] = {0};
+    uint64_t serialNumber = 0;
     delay(30);
     // Ensure sensor is in clean state
     error = sensor.wakeUp();
@@ -90,15 +88,15 @@ void setup() {
         Serial.println(errorMessage);
     }
     // Read out information about the sensor
-    error = sensor.getSerialNumber(serialNumber, 3);
+    error = sensor.getSerialNumber(serialNumber);
     if (error != NO_ERROR) {
         Serial.print("Error trying to execute getSerialNumber(): ");
         errorToString(error, errorMessage, sizeof errorMessage);
         Serial.println(errorMessage);
         return;
     }
-    Serial.print("serial number: ");
-    print_ushort_array(serialNumber, 3);
+    Serial.print("serial number: 0x");
+    PrintUint64(serialNumber);
     Serial.println();
     //
     // If temperature offset and/or sensor altitude compensation

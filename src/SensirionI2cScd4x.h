@@ -595,15 +595,16 @@ class SensirionI2cScd4x {
      * verify the presence of the sensor. The get_serial_number command returns
      * 3 words, and every word is followed by an 8-bit CRC checksum. Together,
      * the 3 words constitute a unique serial number with a length of 48 bits
-     * (in big endian format).
+     * (in big endian format). This method takes care of converting the serial
+     * number from the 3 words to an 64 bit unsigned integer.
      *
-     * @param[out] serialNumber 48-bit unique serial number of the sensor.
+     * @param[out] serialNumber of the sensor as integer.
      *
      * @note This command is only available in idle mode.
      *
      * @return error_code 0 on success, an error code otherwise.
      */
-    int16_t getSerialNumber(uint16_t serialNumber[], uint16_t serialNumberSize);
+    int16_t getSerialNumber(uint64_t& serialNumber);
 
     /**
      * @brief Perform self test to assess sensor functionality and power supply.
