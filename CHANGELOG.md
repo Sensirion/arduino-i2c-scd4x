@@ -1,60 +1,23 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
+# CHANGELOG
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased] 
 
-## [0.4.0] - 2023-03-06
-
-### Added
-- Methods for ASC (Automatic Self Calibration)
-
-### Breaking changes
-- Renamed getDataReadyStatus to getDataReadyFlag 
-
-### Fixed
-- RH/T conversion now uses correct constant: `2^16 - 1`
-- Fixed a few comments
-- Initializing the output variables to zero 
-
-## [0.3.1] - 2021-04-30
-
-### Changed
-
-* Increase timing for single shot from 1350ms to 5000ms
-* Increase timing for self test from 5500ms to 10000ms
-
-
-## [0.3.0] - 2021-03-01
-
-### Added
-- Convenience interfaces taking care of unit conversion to and from ticks.
-
-### Fixed
-- wake-up interface handles missing ACK from sensor on wake up.
-
-
-## [0.2.0] - 2021-02-10
-
-### Changed
-
-* Updated Sensirion Core library version from 0.4.0 to 0.4.2. This includes the
-  renaming of the library header file from `SensirionCoreArduinoLibrary.h` to
-  `SensirionCore.h`.
-* Define `SCD4X_I2C_ADDRESS` as hex instead of dec (unchanged value).
+## [1.0.0] - 2025-1-30
 
 ### Added
 
-* Added warning about limited EEPROM write cycles.
+- All commands according to data sheet
 
-## [0.1.0] - 2021-02-05
+## [0.1.0] - 2021-2-1
 
-Initial release
+### Added
 
-[0.3.1]: https://github.com/Sensirion/arduino-i2c-scd4x/compare/0.3.0...0.3.1
-[0.3.0]: https://github.com/Sensirion/arduino-i2c-scd4x/compare/0.2.0...0.3.0
-[0.2.0]: https://github.com/Sensirion/arduino-i2c-scd4x/compare/0.1.0...0.2.0
+- Initial version
+- Check latest 0.x.x version for changelog prior to version 1.0.0
+
+[Unreleased]: https://github.com/Sensirion/arduino-i2c-scd4x/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/Sensirion/arduino-i2c-scd4x/compare/0.1.0...1.0.0
 [0.1.0]: https://github.com/Sensirion/arduino-i2c-scd4x/releases/tag/0.1.0

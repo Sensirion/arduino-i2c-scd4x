@@ -1,10 +1,8 @@
 name: Quality check
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
+  pull_request:
     branches:
       - master
 
@@ -13,4 +11,5 @@ jobs:
     uses: sensirion/.github/.github/workflows/driver.arduino.check.yml@main
     with:
       expect-arduino-examples: true
+      # change to "update" once you published the driver on Arduino library registry
       lint-lib-manager-check: update
