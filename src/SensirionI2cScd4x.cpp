@@ -165,24 +165,27 @@ int16_t SensirionI2cScd4x::getDataReadyStatus(bool& arg0) {
 
 int16_t
 SensirionI2cScd4x::getSensorVariant(SCD4xSensorVariant& aSensorVariant) {
+    SCD4xSensorVariant retVal = SCD4X_SENSOR_VARIANT_MASK;
     uint16_t rawSensorVariant = 0;
+    uint16_t mySensorVariant = 0;
     int16_t localError = 0;
+    retVal = SCD4X_SENSOR_VARIANT_MASK;
+    uint16_t mask = (uint16_t)(retVal);
     localError = getSensorVariantRaw(rawSensorVariant);
     if (localError != NO_ERROR) {
         return localError;
     }
-    uint16_t variant = (uint16_t)(rawSensorVariant & 4);
-    if (variant == 0) {
-        aSensorVariant = SCD4X_SENSOR_VARIANT_SCD40;
-        ;
-        return localError;
-    } else if (variant == 1) {
-        aSensorVariant = SCD4X_SENSOR_VARIANT_SCD41;
-        ;
-        return localError;
+    mySensorVariant = (uint16_t)(rawSensorVariant & mask);
+    if (mySensorVariant == (uint16_t)(SCD4X_SENSOR_VARIANT_SCD40)) {
+        retVal = SCD4X_SENSOR_VARIANT_SCD40;
+    } else if (mySensorVariant == (uint16_t)(SCD4X_SENSOR_VARIANT_SCD41)) {
+        retVal = SCD4X_SENSOR_VARIANT_SCD41;
+    } else if (mySensorVariant == (uint16_t)(SCD4X_SENSOR_VARIANT_SCD42)) {
+        retVal = SCD4X_SENSOR_VARIANT_SCD42;
+    } else if (mySensorVariant == (uint16_t)(SCD4X_SENSOR_VARIANT_SCD43)) {
+        retVal = SCD4X_SENSOR_VARIANT_SCD43;
     }
-    aSensorVariant = SCD4X_SENSOR_VARIANT_UNKNOWN;
-    ;
+    aSensorVariant = retVal;
     return localError;
 }
 
@@ -555,7 +558,8 @@ int16_t SensirionI2cScd4x::getSerialNumber(uint64_t& serialNumber) {
     if (localError != NO_ERROR) {
         return localError;
     }
-    localError |= rxFrame.getInteger(reinterpret_cast<uint8_t*>(&serialNumber), LongInteger, 6);
+    localError |= rxFrame.getInteger(reinterpret_cast<uint8_t*>(&serialNumber),
+                                     LongInteger, 6);
     return localError;
 }
 
