@@ -20,6 +20,7 @@ support it are listed in the API description.
 | ------------- | -------------- |
 |[SCD40](https://sensirion.com/products/catalog/SCD40)| **0x62**|
 |[SCD41](https://sensirion.com/products/catalog/SCD41)| **0x62**|
+|[SCD43](https://sensirion.com/products/catalog/SCD43)| **0x62**|
 
 The following instructions and examples use a *SCD41*.
 
