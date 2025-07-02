@@ -8,3 +8,4 @@ on:
 jobs:
   github-release:
     uses: sensirion/.github/.github/workflows/driver.common.github_release.yml@main
+    secrets: inherit
